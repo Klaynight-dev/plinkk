@@ -96,7 +96,7 @@ export const profileData = {
 
     backgroundSize : 50, // En pourcentage
     
-    selectedThemeIndex: 5,                   // Thème sélectionné            (voir ci-dessous)
+    selectedThemeIndex: 13,                   // Thème sélectionné            (voir ci-dessous)
 
     selectedAnimationIndex : 0,              // Animation de l'article       (voir ci-dessous)
     selectedAnimationButtonIndex : 10,       // Animation des boutons        (voir ci-dessous)
@@ -106,7 +106,7 @@ export const profileData = {
     delayAnimationButton: 0.1,        // Délai de l'animation en secondes
 
     canvaEnable: 1, // 1 : Enable, 0 : Disable
-    selectedCanvasIndex: 15,          // Animation du canva (voir ci-dessous) - Matrix Effect
+    selectedCanvasIndex: 16,          // Animation du canva (voir ci-dessous) - Matrix Effect
 
 };
 
