@@ -1,0 +1,47 @@
+{
+  "name": "plinkk",
+  "version": "1.25.07.31",
+  "description": "Template moderne pour créer votre page de liens personnalisée avec TypeScript",
+  "main": "index.html",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "clean": "rimraf dist public",
+    "build": "tsc && npm run copy-canva && npm run copy-js && npm run copy-css && npm run copy-images && npm run copy-html",
+    "copy-js": "bash -c \"mkdir -p dist/contents && cp -r contents/js dist/contents/\"",
+    "copy-css": "bash -c \"mkdir -p dist/contents && cp -r contents/css dist/contents/\"",
+    "copy-images": "bash -c \"mkdir -p dist/contents && cp -r contents/images dist/contents/\"",
+    "copy-html": "bash -c \"mkdir -p dist && cp index.html dist/\"",
+    "copy-canva": "bash -c \"mkdir -p dist/canvaAnimation && cp -r contents/js/canvaAnimation/* dist/canvaAnimation/\""
+  },
+  "keywords": [
+    "linktree",
+    "links",
+    "template",
+    "typescript",
+    "discord",
+    "profile",
+    "portfolio"
+  ],
+  "author": "Klaynight Dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Klaynight-dev/plinkk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Klaynight-dev/plinkk/issues"
+  },
+  "homepage": "https://github.com/Klaynight-dev/plinkk#readme",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "private": true,
+  "dependencies": {
+    "typescript": "^5.0.0",
+    "rimraf": "^5.0.0"
+  }
+}
