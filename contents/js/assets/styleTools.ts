@@ -347,14 +347,14 @@ export function applyDynamicStyles(
                 };
 
                 // Charger les scripts dans l'ordre
-                loadScript('./dist/canvaAnimation/matrix-effect/effect.js')
+                loadScript('./canvaAnimation/matrix-effect/effect.js')
                     .then(() => {
                         console.log("Effect.js loaded, checking window.Effect:", typeof window.Effect);
-                        return loadScript('./dist/canvaAnimation/matrix-effect/symbol.js');
+                        return loadScript('./canvaAnimation/matrix-effect/symbol.js');
                     })
                     .then(() => {
                         console.log("Symbol.js loaded, checking window.Symbol:", typeof window.Symbol);
-                        return loadScript('./dist/canvaAnimation/matrix-effect/app.js');
+                        return loadScript('./canvaAnimation/matrix-effect/app.js');
                     })
                     .then(() => {
                         console.log("App.js loaded, checking runCanvasAnimation:", typeof runCanvasAnimation);
@@ -372,7 +372,7 @@ export function applyDynamicStyles(
             } else {
                 // Pour les autres animations
                 const script = document.createElement("script");
-                script.src = `./dist/canvaAnimation/${canvaData[selectedCanvasIndex].fileNames}`;
+                script.src = `./canvaAnimation/${canvaData[selectedCanvasIndex].fileNames}`;
                 document.body.appendChild(script);
 
                 script.onload = () => {
