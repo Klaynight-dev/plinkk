@@ -180,6 +180,18 @@ export const btnIconThemeConfig = [
         alt: "Goodreads"
     },
     {
+        name: "Google",
+        icon: "contents/images/icons/google.svg",
+        themeClass: "button-google",
+        alt: "Google"
+    },
+    {
+        name: "Google Alt",
+        icon: "contents/images/icons/google-alt.svg",
+        themeClass: "button-google-alt",
+        alt: "Google Alt"
+    },
+    {
         name: "Google Black",
         icon: "contents/images/icons/google-black.svg",
         themeClass: "button-google-black",
