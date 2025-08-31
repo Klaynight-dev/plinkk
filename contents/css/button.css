@@ -253,7 +253,18 @@
       --button-background:#f3f1e6;
       --button-border:1px solid #212121;
   }
-  
+
+  /* Google */
+  .button-google {
+      --button-text:#FFFFFF;
+      --background-image:linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335);
+  }
+
+  .button-google-alt {
+      --button-text:#FFFFFF;
+      --background-image:linear-gradient(90deg,#4285F4,#34A853,#FBBC05,#EA4335);
+  }
+
   /* Google Black */
   .button-google-black {
       --button-text:#FFFFFF;
