@@ -139,37 +139,74 @@ export function applyTheme(theme) {
     }
     // Apply the new property articleHoverBoxShadow
     const styleSheet = document.styleSheets[0];
-    styleSheet.insertRule(`
-        article:hover {
-            box-shadow: ${theme.articleHoverBoxShadow};
+    // Vérifications de sécurité pour éviter les valeurs invalides
+    if (theme.articleHoverBoxShadow && theme.articleHoverBoxShadow.trim() !== '') {
+        try {
+            styleSheet.insertRule(`
+                article:hover {
+                    box-shadow: ${theme.articleHoverBoxShadow};
+                }
+            `, styleSheet.cssRules.length);
         }
-    `, styleSheet.cssRules.length);
-    // Apply scrollbar styles
-    styleSheet.insertRule(`
-        ::-webkit-scrollbar {
-            width: 12px;
+        catch (e) {
+            console.warn('Invalid articleHoverBoxShadow value:', theme.articleHoverBoxShadow, e);
         }
-    `, styleSheet.cssRules.length);
-    styleSheet.insertRule(`
-        ::-webkit-scrollbar-track {
-            background: ${theme.background};
-            border-radius: 10px;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    // Apply scrollbar styles avec vérifications
+    try {
+        styleSheet.insertRule(`
+            ::-webkit-scrollbar {
+                width: 12px;
+            }
+        `, styleSheet.cssRules.length);
+    }
+    catch (e) {
+        console.warn('Error adding scrollbar rule:', e);
+    }
+    if (theme.background && theme.background.trim() !== '') {
+        try {
+            styleSheet.insertRule(`
+                ::-webkit-scrollbar-track {
+                    background: ${theme.background};
+                    border-radius: 10px;
+                    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+                }
+            `, styleSheet.cssRules.length);
         }
-    `, styleSheet.cssRules.length);
-    styleSheet.insertRule(`
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, ${theme.buttonBackground}, ${theme.buttonHoverBackground});
-            border-radius: 10px;
-            border: 3px solid ${theme.background};
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        catch (e) {
+            console.warn('Invalid background value for scrollbar track:', theme.background, e);
         }
-    `, styleSheet.cssRules.length);
-    styleSheet.insertRule(`
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(45deg, ${theme.buttonHoverBackground}, ${theme.buttonBackground});
+    }
+    if (theme.buttonBackground && theme.buttonHoverBackground &&
+        theme.buttonBackground.trim() !== '' && theme.buttonHoverBackground.trim() !== '' &&
+        theme.background && theme.background.trim() !== '') {
+        try {
+            styleSheet.insertRule(`
+                ::-webkit-scrollbar-thumb {
+                    background: linear-gradient(45deg, ${theme.buttonBackground}, ${theme.buttonHoverBackground});
+                    border-radius: 10px;
+                    border: 3px solid ${theme.background};
+                    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+                }
+            `, styleSheet.cssRules.length);
         }
-    `, styleSheet.cssRules.length);
+        catch (e) {
+            console.warn('Invalid button colors for scrollbar thumb:', theme.buttonBackground, theme.buttonHoverBackground, e);
+        }
+    }
+    if (theme.buttonHoverBackground && theme.buttonBackground &&
+        theme.buttonHoverBackground.trim() !== '' && theme.buttonBackground.trim() !== '') {
+        try {
+            styleSheet.insertRule(`
+                ::-webkit-scrollbar-thumb:hover {
+                    background: linear-gradient(45deg, ${theme.buttonHoverBackground}, ${theme.buttonBackground});
+                }
+            `, styleSheet.cssRules.length);
+        }
+        catch (e) {
+            console.warn('Invalid button colors for scrollbar thumb hover:', theme.buttonHoverBackground, theme.buttonBackground, e);
+        }
+    }
     const easterEggsBtn = document.querySelector(".easter-egg-gear-btn");
     const easterEggsModal = document.querySelector(".easter-egg-modal");
     if (easterEggsBtn) {
@@ -331,49 +368,76 @@ export function applyDynamicStyles(profileData, styleSheet, selectedAnimationBac
     else {
         document.body.style.animation = "none";
     }
-    // Appliquer le neon si activé
+    // Appliquer le neon si activé avec vérifications
     if (profileData.neonEnable === 0) {
-        styleSheet.insertRule(`
-            .profile-pic-wrapper::before,
-            .profile-pic-wrapper::after {
-                display: none;
-            }
-        `, styleSheet.cssRules.length);
+        try {
+            styleSheet.insertRule(`
+                .profile-pic-wrapper::before,
+                .profile-pic-wrapper::after {
+                    display: none;
+                }
+            `, styleSheet.cssRules.length);
+        }
+        catch (e) {
+            console.warn('Error adding neon disable rule:', e);
+        }
     }
     else {
-        const neonGradient = profileData.neonColors.join(", ");
-        styleSheet.insertRule(`
-            .profile-pic-wrapper::after, .profile-pic-wrapper::before {
-                background: linear-gradient(45deg, ${neonGradient});
+        if (profileData.neonColors && Array.isArray(profileData.neonColors) && profileData.neonColors.length > 0) {
+            const neonGradient = profileData.neonColors.filter(color => color && color.trim() !== '').join(", ");
+            if (neonGradient) {
+                try {
+                    styleSheet.insertRule(`
+                        .profile-pic-wrapper::after, .profile-pic-wrapper::before {
+                            background: linear-gradient(45deg, ${neonGradient});
+                        }
+                    `, styleSheet.cssRules.length);
+                }
+                catch (e) {
+                    console.warn('Invalid neon colors:', profileData.neonColors, e);
+                }
             }
-        `, styleSheet.cssRules.length);
+        }
     }
 }
 export function addEmailStyles() {
     const styleSheet = document.styleSheets[0];
-    styleSheet.insertRule(`
-        .email {
-            width: 100%;
-            border: 2px solid ${themes[profileData.selectedThemeIndex % themes.length].buttonHoverBackground};
-            border-radius: 10px;
-            background-color: #2C2F33;
-            color: white;
-            font-size: 1em;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-    `, styleSheet.cssRules.length);
-    styleSheet.insertRule(`
-        .email a {
-            display: block;
-            padding: 10px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border-radius: 10px;
-        }
-    `, styleSheet.cssRules.length);
+    // Vérifier que le thème existe et a les propriétés nécessaires
+    const currentTheme = themes[profileData.selectedThemeIndex % themes.length];
+    const borderColor = (currentTheme === null || currentTheme === void 0 ? void 0 : currentTheme.buttonHoverBackground) || '#2C2F33';
+    try {
+        styleSheet.insertRule(`
+            .email {
+                width: 100%;
+                border: 2px solid ${borderColor};
+                border-radius: 10px;
+                background-color: #2C2F33;
+                color: white;
+                font-size: 1em;
+                font-weight: bold;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+        `, styleSheet.cssRules.length);
+    }
+    catch (e) {
+        console.warn('Error adding email styles:', e);
+    }
+    try {
+        styleSheet.insertRule(`
+            .email a {
+                display: block;
+                padding: 10px;
+                text-align: center;
+                text-decoration: none;
+                color: white;
+                border-radius: 10px;
+            }
+        `, styleSheet.cssRules.length);
+    }
+    catch (e) {
+        console.warn('Error adding email link styles:', e);
+    }
 }
 export default {
     applyFirstTheme,

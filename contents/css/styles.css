@@ -34,8 +34,8 @@ article {
         linear-gradient(135deg, 
             rgba(255, 255, 255, 0.08) 0%, 
             rgba(255, 255, 255, 0.03) 100%);
-    padding: 48px 32px;
-    border-radius: 32px;
+    padding: 24px 20px;
+    border-radius: 24px;
     backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 
@@ -45,11 +45,11 @@ article {
         inset 0 -1px 0 rgba(255, 255, 255, 0.05);
     overflow: hidden;
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    top: -35px;
-    min-width: 380px;
-    max-width: 480px;
+    top: -20px;
+    min-width: 320px;
+    max-width: 400px;
     z-index: 10;
-    margin: 3em auto 1em auto;
+    margin: 2em auto 1em auto;
     animation: fadeInUp 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     will-change: transform;
 }
@@ -88,9 +88,9 @@ article:hover {
 
 /* Typographie futuriste */
 h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, 
         #f8fafc 0%, 
         #cbd5e1 30%, 
@@ -107,19 +107,19 @@ h1 {
 }
 
 h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 400;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     color: rgba(248, 250, 252, 0.8);
     letter-spacing: 0.5px;
     line-height: 1.4;
 }
 
 p {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.5;
     opacity: 0.9;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .profile-link p {
@@ -131,11 +131,11 @@ p {
 /* Conteneur profile ultra-moderne avec système logo préservé */
 .profile-container {
     position: relative;
-    width: 180px;
-    height: 180px;
-    min-width: 180px;
-    min-height: 180px;
-    margin: 0 auto 32px auto;
+    width: 140px;
+    height: 140px;
+    min-width: 140px;
+    min-height: 140px;
+    margin: 0 auto 20px auto;
     perspective: 1000px;
     filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.4));
 }
@@ -292,8 +292,8 @@ p {
     object-fit: cover;
     z-index: 3;
     cursor: pointer;
-    min-width: 180px;
-    min-height: 180px;
+    min-width: 140px;
+    min-height: 140px;
     box-shadow: 
         0 16px 48px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.1),
@@ -394,8 +394,8 @@ p {
 }
 
 .profile-container a {
-    height: 180px;
-    width: 180px;
+    height: 140px;
+    width: 140px;
     display: block;
 }
 
@@ -403,18 +403,18 @@ p {
 
 /* Email */
 .email-description-container {
-    font-size: 1em;
+    font-size: 0.9em;
     color: white;
     font-weight: bold;
     background-color: #2C2F33;
-    padding: 5px;
-    border-radius: 10px;
+    padding: 4px;
+    border-radius: 8px;
     z-index: 999;
 }
 
 .email { 
     position: relative;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .copy-btn {
@@ -439,16 +439,16 @@ p {
 .discord-box {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-top: 16px;
-    padding: 20px 24px;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 16px 20px;
     background: 
         linear-gradient(135deg, 
             rgba(255, 255, 255, 0.09) 0%, 
             rgba(255, 255, 255, 0.04) 100%);
-    border-radius: 20px;
+    border-radius: 16px;
     color: #f8fafc;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
@@ -519,8 +519,8 @@ p {
 
 .discord-box img,
 .discord-box .link-icon {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -542,7 +542,7 @@ p {
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 16px 20px;
+    padding: 12px 16px;
     box-sizing: border-box;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -551,11 +551,11 @@ p {
 /* Footer ultra-moderne */
 footer {
     position: fixed;
-    bottom: 20px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    font-size: 0.75em;
+    font-size: 0.7em;
     font-weight: 500;
     color: rgba(248, 250, 252, 0.7);
     letter-spacing: 0.8px;
@@ -564,8 +564,8 @@ footer {
             rgba(255, 255, 255, 0.08) 0%, 
             rgba(255, 255, 255, 0.04) 100%);
     backdrop-filter: blur(16px) saturate(180%);
-    padding: 12px 24px;
-    border-radius: 20px;
+    padding: 8px 16px;
+    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.2),
@@ -609,19 +609,27 @@ span img {
 /* Responsive Design amélioré */
 @media (max-width: 480px) {
     article {
-        margin: 2em 10px 1em 10px;
-        padding: 30px 20px;
+        margin: 1.5em 10px 1em 10px;
+        padding: 20px 16px;
         min-width: auto;
         width: calc(100vw - 20px);
-        max-width: 360px;
+        max-width: 340px;
     }
     
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
     
     h2 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .profile-container {
+        width: 120px;
+        height: 120px;
+        min-width: 120px;
+        min-height: 120px;
+        margin-bottom: 16px;
     }
     
     /* Ajustements pour la barre de statut mobile */
@@ -646,8 +654,8 @@ span img {
 @media (max-width: 320px) {
     article {
         min-width: 200px;
-        padding: 20px 15px;
-        margin: 1.5em 5px;
+        padding: 16px 12px;
+        margin: 1em 5px;
     }
     .profile-container {
         width: 100px;
@@ -667,17 +675,17 @@ span img {
     }
     
     h1 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
     
     .label-button {
         padding: 6px 12px;
-        font-size: 0.7em;
+        font-size: 0.65em;
     }
     
     footer {
-        font-size: 0.5em;
-        padding: 1em;
+        font-size: 0.55em;
+        padding: 6px 12px;
     }
     
     /* Barre de statut ultra-compacte sur très petits écrans */
@@ -705,12 +713,12 @@ span img {
 
 .theme-toggle-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -736,8 +744,8 @@ canvas {
 .profile-description {
     color: white;
     background-color: rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    border-radius: 15px;
+    padding: 12px;
+    border-radius: 12px;
     text-align: left;
     transition: background-color 0.3s ease, transform 0.3s ease;
     font-weight: normal;
@@ -755,17 +763,17 @@ canvas {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 32px;
+    gap: 8px;
+    margin-bottom: 20px;
 }
 
 .label-button {
     color: #f8fafc;
-    padding: 10px 20px;
-    border-radius: 25px;
+    padding: 8px 16px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    font-size: 0.85em;
+    font-size: 0.8em;
     font-weight: 500;
     width: max-content;
     background: 
@@ -821,11 +829,11 @@ canvas {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin: 0.4em 0;
+    margin: 0.2em 0;
 }
 
 .icon-list .icon-item {
-    margin: 0 5px;
+    margin: 0 4px;
 }
 
 .icon-list .icon-item:hover {
