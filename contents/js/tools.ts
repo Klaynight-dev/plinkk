@@ -140,7 +140,7 @@ export function createEmailAndDescription(profileData) {
             rpLaunched = false; // reset RP si on arrête de spam
             // reset visuel si besoin
             copyBtn.classList.remove("btn-crack", "btn-broken", "btn-explode");
-            copyBtn.style = "";
+            copyBtn.style.cssText = "";
         }
         lastClick = now;
 
@@ -150,7 +150,7 @@ export function createEmailAndDescription(profileData) {
             spamCount = 0;
             rpLaunched = false;
             copyBtn.classList.remove("btn-crack", "btn-broken", "btn-explode");
-            copyBtn.style = "";
+            copyBtn.style.cssText = "";
         }, 5000);
 
         // Vibrations
@@ -359,38 +359,8 @@ export function createLinkBoxes(profileData) {
     return profileData.links.slice(0, maxLinkNumber).map(link => {
         const discordBox = document.createElement("div");
         const discordIcon = document.createElement("img");
-        if (profileData.buttonThemeEnable === 0 && link.showDescription === true) {
-            discordIcon.style.top = "24px";
-        }
-
-        if (profileData.buttonThemeEnable === 1) {
-            const themeConfig = btnIconThemeConfig?.find(config => config.name === link.name);
-            if (themeConfig) {  
-                const themeClass = themeConfig.themeClass;
-                discordBox.className = `button ${themeClass}`;
-                
-                discordIcon.classList = "link-icon";
-                discordIcon.src = themeConfig.icon;
-                discordIcon.loading = "lazy";
-                discordBox.appendChild(discordIcon);
-                discordIcon.className = "icon";
-            } else {
-                discordBox.className = "discord-box";
-                discordIcon.classList = "link-icon";
-                discordIcon.src = link.icon;
-                discordIcon.alt = link.text;
-                discordIcon.loading = "lazy";
-                discordBox.appendChild(discordIcon);
-            }
-        } else {
-            discordBox.className = "discord-box";
-            discordIcon.classList = "link-icon";
-            discordIcon.src = link.icon;
-            discordIcon.alt = link.text;
-            discordIcon.loading = "lazy";
-            discordBox.appendChild(discordIcon);
-        }
-
+        
+        // Créer le lien principal qui englobe tout le contenu
         const discordLink = document.createElement("a");
         if (isSafeUrl(link.url)) {
             discordLink.href = link.url;
@@ -400,9 +370,46 @@ export function createLinkBoxes(profileData) {
             discordLink.href = "#";
             discordLink.title = "Lien non valide";
         }
-        discordLink.textContent = link.text;
-        discordBox.appendChild(discordLink);
 
+        if (profileData.buttonThemeEnable === 1) {
+            const themeConfig = btnIconThemeConfig?.find(config => config.name === link.name);
+            if (themeConfig) {  
+                const themeClass = themeConfig.themeClass;
+                discordBox.className = `button ${themeClass}`;
+                
+                discordIcon.className = "link-icon";
+                discordIcon.src = themeConfig.icon;
+                discordIcon.loading = "lazy";
+                discordIcon.className = "icon";
+            } else {
+                discordBox.className = "discord-box";
+                discordIcon.className = "link-icon";
+                discordIcon.src = link.icon;
+                discordIcon.alt = link.text;
+                discordIcon.loading = "lazy";
+            }
+        } else {
+            discordBox.className = "discord-box";
+            discordIcon.className = "link-icon";
+            discordIcon.src = link.icon;
+            discordIcon.alt = link.text;
+            discordIcon.loading = "lazy";
+        }
+
+        // Créer un conteneur pour le contenu principal (icône + texte)
+        const mainContent = document.createElement("div");
+        mainContent.style.display = "flex";
+        mainContent.style.alignItems = "center";
+        mainContent.style.gap = "12px";
+        
+        // Ajouter l'icône au conteneur principal
+        mainContent.appendChild(discordIcon);
+        
+        // Créer un span pour le texte
+        const textSpan = document.createElement("span");
+        textSpan.textContent = link.text;
+        
+        // Gérer les descriptions
         if (link.description && link.description.trim() !== "" && link.showDescription) {
             // Create the arrow emoji element
             const arrow = document.createElement("span");
@@ -420,9 +427,10 @@ export function createLinkBoxes(profileData) {
                 stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             `;
-            discordLink.appendChild(arrow);
+            textSpan.appendChild(arrow);
 
-            const desc = document.createElement("p");
+            // Créer la description
+            const desc = document.createElement("div");
             desc.className = "link-description";
             setSafeText(desc, link.description);
 
@@ -431,12 +439,14 @@ export function createLinkBoxes(profileData) {
             desc.style.maxHeight = "0";
             desc.style.opacity = "0";
             desc.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-            desc.style.padding = "0 5px";
+            desc.style.padding = "0 8px";
             desc.style.borderRadius = "5px";
             desc.style.border = "1px solid rgba(255, 255, 255, 0.5)";
             desc.style.marginTop = "0";
             desc.style.marginBottom = "0";
             desc.style.display = "block";
+            desc.style.width = "100%";
+            desc.style.fontSize = "0.9em";
             
             discordIcon.style.transition = "transform 0.7s cubic-bezier(0.4,0,0.2,1)";
             if (profileData.buttonThemeEnable === 1) {
@@ -458,16 +468,18 @@ export function createLinkBoxes(profileData) {
                 showDescBtn.style.background = "#eee";
                 showDescBtn.style.cursor = "pointer";
                 showDescBtn.style.transition = "background 0.2s";
+                showDescBtn.style.pointerEvents = "auto";
                 let descVisible = false;
                 showDescBtn.addEventListener("click", (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     descVisible = !descVisible;
                     if (descVisible) {
                         desc.style.maxHeight = "200px";
                         desc.style.opacity = "1";
                         desc.style.marginTop = "8px";
-                        desc.style.marginBottom = "5px";
-                        desc.style.padding = "5px";
+                        desc.style.marginBottom = "0";
+                        desc.style.padding = "8px";
                         arrow.style.opacity = "0";
                         showDescBtn.textContent = "Masquer la description";
                     } else {
@@ -475,38 +487,48 @@ export function createLinkBoxes(profileData) {
                         desc.style.opacity = "0";
                         desc.style.marginTop = "0";
                         desc.style.marginBottom = "0";
-                        desc.style.padding = "0 5px";
+                        desc.style.padding = "0 8px";
                         arrow.style.opacity = "1";
                         showDescBtn.textContent = "Afficher la description";
                     }
                 });
-                discordBox.appendChild(showDescBtn);
+                
+                // Ajouter le bouton au conteneur principal au lieu du discordBox
+                mainContent.appendChild(showDescBtn);
             } else {
-                // Desktop : hover classique
-                discordLink.addEventListener("mouseover", () => {
-                    discordBox.style.transition = "transform 0.7s cubic-bezier(0.4,0,0.2,1)";
+                // Desktop : hover classique sur le lien entier
+                discordLink.addEventListener("mouseenter", () => {
                     desc.style.maxHeight = "200px";
                     desc.style.opacity = "1";
                     desc.style.marginTop = "8px";
-                    desc.style.marginBottom = "5px";
-                    desc.style.padding = "5px";
+                    desc.style.marginBottom = "0";
+                    desc.style.padding = "8px";
                     arrow.style.opacity = "0";
                 });
-                discordLink.addEventListener("mouseout", () => {
+                discordLink.addEventListener("mouseleave", () => {
                     desc.style.maxHeight = "0";
                     desc.style.opacity = "0";
                     desc.style.marginTop = "0";
                     desc.style.marginBottom = "0";
-                    desc.style.padding = "0 5px";
+                    desc.style.padding = "0 8px";
                     arrow.style.opacity = "1";
                 });
             }
 
+            // Ajouter la description au lien (en bas)
+            mainContent.appendChild(textSpan);
+            discordLink.appendChild(mainContent);
             discordLink.appendChild(desc);
+        } else {
+            // Sans description, structure simple
+            mainContent.appendChild(textSpan);
+            discordLink.appendChild(mainContent);
         }
         
+        discordBox.appendChild(discordLink);
+        
         if (!link.text.trim()) {
-            discordLink.style.display = "none";
+            discordBox.style.display = "none";
         }
         return discordBox;
     });
