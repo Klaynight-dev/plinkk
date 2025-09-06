@@ -140,7 +140,7 @@ export function createEmailAndDescription(profileData) {
             rpLaunched = false; // reset RP si on arrête de spam
             // reset visuel si besoin
             copyBtn.classList.remove("btn-crack", "btn-broken", "btn-explode");
-            copyBtn.style = "";
+            copyBtn.style.cssText = "";
         }
         lastClick = now;
 
@@ -150,7 +150,7 @@ export function createEmailAndDescription(profileData) {
             spamCount = 0;
             rpLaunched = false;
             copyBtn.classList.remove("btn-crack", "btn-broken", "btn-explode");
-            copyBtn.style = "";
+            copyBtn.style.cssText = "";
         }, 5000);
 
         // Vibrations
