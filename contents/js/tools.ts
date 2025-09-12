@@ -107,16 +107,23 @@ export function createEmailAndDescription(profileData) {
     emailLink.href = `mailto:${profileData.email}`;
     setSafeText(emailLink, profileData.email);
     emailLink.style.display = "block"; // pour que le padding s'applique sur toute la largeur
-    emailLink.style.padding = "12px";  // padding interne
+    // Responsive padding
+    emailLink.style.padding = "clamp(8px, 3vw, 12px)";
     emailLink.style.textAlign = "center"; // centrer le texte
+    // Amélioration responsive du texte
+    emailLink.style.fontSize = "clamp(0.9rem, 2.5vw, 1rem)";
+    emailLink.style.wordBreak = "break-all";
     emailDiv.appendChild(emailLink);
 
     const copyBtn = document.createElement("button");
     copyBtn.type = "button";
     copyBtn.title = "Copier l'email";
     copyBtn.className = "copy-btn";
+    // Taille responsive du bouton
+    copyBtn.style.width = "clamp(40px, 10vw, 48px)";
+    copyBtn.style.height = "clamp(40px, 10vw, 48px)";
     copyBtn.innerHTML = `
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+        <svg width="clamp(16, 4vw, 20)" height="clamp(16, 4vw, 20)" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -165,12 +172,12 @@ export function createEmailAndDescription(profileData) {
             setTimeout(() => document.body.classList.remove("vibrate_parent"), 200);
         }
 
-        // Copie dans le presse-papier
+        // Copie dans le presse-papier avec feedback amélioré
         if (navigator.clipboard) {
             navigator.clipboard.writeText(profileData.email)
                 .then(() => {
                     copyBtn.innerHTML = `
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                        <svg width="clamp(16, 4vw, 20)" height="clamp(16, 4vw, 20)" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                             <polyline points="20 6 9 17 4 12"/>
                         </svg>
@@ -179,7 +186,7 @@ export function createEmailAndDescription(profileData) {
                     if (iconTimeout) clearTimeout(iconTimeout);
                     iconTimeout = setTimeout(() => {
                         copyBtn.innerHTML = `
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            <svg width="clamp(16, 4vw, 20)" height="clamp(16, 4vw, 20)" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -319,25 +326,48 @@ export function showCopyModal(message, btn) {
     modal.style.transform = "translate(-50%, -100%)";
     modal.style.background = "rgba(40,40,40,0.95)";
     modal.style.color = "#fff";
-    modal.style.padding = "8px 18px";
-    modal.style.borderRadius = "8px";
-    modal.style.fontSize = "1em";
+    // Padding responsive
+    modal.style.padding = "clamp(6px, 2vw, 8px) clamp(12px, 4vw, 18px)";
+    modal.style.borderRadius = "clamp(6px, 2vw, 8px)";
+    // Taille de police responsive
+    modal.style.fontSize = "clamp(0.8rem, 2.5vw, 1rem)";
     modal.style.fontWeight = "bold";
     modal.style.boxShadow = "0 4px 24px rgba(0,0,0,0.25)";
     modal.style.pointerEvents = "none";
     modal.style.zIndex = "100";
     modal.style.transition = "opacity 0.3s cubic-bezier(0.4,0,0.2,1)";
+    // Largeur maximale pour éviter le débordement
+    modal.style.maxWidth = "90vw";
+    modal.style.whiteSpace = "nowrap";
+    modal.style.overflow = "hidden";
+    modal.style.textOverflow = "ellipsis";
 
-    // Calcul de la place à l'écran
+    // Calcul responsive de la position
     const btnRect = btn.getBoundingClientRect();
     const modalHeight = 60;
+    const viewportHeight = window.innerHeight;
+    
     if (btnRect.top - modalHeight < 10) {
-        modal.style.top = "calc(100% + 10px)";
+        modal.style.top = "calc(100% + clamp(8px, 2vw, 10px))";
         modal.style.transform = "translate(-50%, 0)";   
     } else {
-        modal.style.top = "-10px";
+        modal.style.top = "clamp(-8px, -2vw, -10px)";
         modal.style.transform = "translate(-50%, -100%)";
     }
+    
+    // Vérification des limites horizontales
+    setTimeout(() => {
+        const modalRect = modal.getBoundingClientRect();
+        if (modalRect.left < 10) {
+            modal.style.left = "10px";
+            modal.style.transform = modal.style.transform.replace("translate(-50%", "translate(0");
+        } else if (modalRect.right > window.innerWidth - 10) {
+            modal.style.left = "auto";
+            modal.style.right = "10px";
+            modal.style.transform = modal.style.transform.replace("translate(-50%", "translate(0");
+        }
+    }, 0);
+
     modal.style.opacity = "1";
 
     clearTimeout(modal._timeout);
@@ -350,6 +380,8 @@ export function showCopyModal(message, btn) {
 export function createLinkBoxes(profileData) {
     const maxLinkNumber = 20;
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    // Détection plus précise des appareils mobiles
+    const isMobile = window.innerWidth <= 768 || isTouchDevice;
 
     if (!profileData.links || !profileData.links.length) {
         console.warn("No links found in profile data.");
@@ -371,6 +403,7 @@ export function createLinkBoxes(profileData) {
             discordLink.title = "Lien non valide";
         }
 
+        // Configuration responsive des thèmes
         if (profileData.buttonThemeEnable === 1) {
             const themeConfig = btnIconThemeConfig?.find(config => config.name === link.name);
             if (themeConfig) {  
@@ -380,13 +413,17 @@ export function createLinkBoxes(profileData) {
                 discordIcon.className = "link-icon";
                 discordIcon.src = themeConfig.icon;
                 discordIcon.loading = "lazy";
-                discordIcon.className = "icon";
+                // Taille responsive de l'icône
+                discordIcon.style.width = "clamp(20px, 6vw, 24px)";
+                discordIcon.style.height = "clamp(20px, 6vw, 24px)";
             } else {
                 discordBox.className = "discord-box";
                 discordIcon.className = "link-icon";
                 discordIcon.src = link.icon;
                 discordIcon.alt = link.text;
                 discordIcon.loading = "lazy";
+                discordIcon.style.width = "clamp(20px, 6vw, 24px)";
+                discordIcon.style.height = "clamp(20px, 6vw, 24px)";
             }
         } else {
             discordBox.className = "discord-box";
@@ -394,13 +431,18 @@ export function createLinkBoxes(profileData) {
             discordIcon.src = link.icon;
             discordIcon.alt = link.text;
             discordIcon.loading = "lazy";
+            discordIcon.style.width = "clamp(20px, 6vw, 24px)";
+            discordIcon.style.height = "clamp(20px, 6vw, 24px)";
         }
 
         // Créer un conteneur pour le contenu principal (icône + texte)
         const mainContent = document.createElement("div");
         mainContent.style.display = "flex";
         mainContent.style.alignItems = "center";
-        mainContent.style.gap = "12px";
+        // Gap responsive
+        mainContent.style.gap = "clamp(8px, 3vw, 12px)";
+        // Padding responsive pour le contenu
+        mainContent.style.padding = "clamp(8px, 2vw, 12px)";
         
         // Ajouter l'icône au conteneur principal
         mainContent.appendChild(discordIcon);
@@ -408,6 +450,9 @@ export function createLinkBoxes(profileData) {
         // Créer un span pour le texte
         const textSpan = document.createElement("span");
         textSpan.textContent = link.text;
+        // Taille de police responsive
+        textSpan.style.fontSize = "clamp(0.9rem, 3vw, 1rem)";
+        textSpan.style.wordBreak = "break-word";
         
         // Gérer les descriptions
         if (link.description && link.description.trim() !== "" && link.showDescription) {
@@ -420,8 +465,9 @@ export function createLinkBoxes(profileData) {
             arrow.style.transition = "opacity 0.7s cubic-bezier(0.4,0,0.2,1)";
             arrow.style.opacity = "1";
             arrow.style.marginLeft = "5px";
+            // Taille responsive de la flèche
             arrow.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 16 16" fill="none" 
+            <svg width="clamp(16, 4vw, 20)" height="clamp(16, 4vw, 20)" viewBox="0 0 16 16" fill="none" 
                 xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
                 <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1" 
                 stroke-linecap="round" stroke-linejoin="round"/>
@@ -439,14 +485,18 @@ export function createLinkBoxes(profileData) {
             desc.style.maxHeight = "0";
             desc.style.opacity = "0";
             desc.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-            desc.style.padding = "0 8px";
-            desc.style.borderRadius = "5px";
+            // Padding responsive
+            desc.style.padding = "0 clamp(6px, 2vw, 8px)";
+            desc.style.borderRadius = "clamp(4px, 1vw, 5px)";
             desc.style.border = "1px solid rgba(255, 255, 255, 0.5)";
             desc.style.marginTop = "0";
             desc.style.marginBottom = "0";
             desc.style.display = "block";
             desc.style.width = "100%";
-            desc.style.fontSize = "0.9em";
+            // Taille de police responsive pour la description
+            desc.style.fontSize = "clamp(0.8rem, 2.5vw, 0.9rem)";
+            desc.style.lineHeight = "1.4";
+            desc.style.wordBreak = "break-word";
             
             discordIcon.style.transition = "transform 0.7s cubic-bezier(0.4,0,0.2,1)";
             if (profileData.buttonThemeEnable === 1) {
@@ -455,20 +505,25 @@ export function createLinkBoxes(profileData) {
 
             arrow.style.transform = "translateY(3px)";
 
-            if (isTouchDevice) {
+            if (isMobile) {
                 // Sur mobile/tactile : bouton pour afficher/masquer la description
                 const showDescBtn = document.createElement("button");
-                showDescBtn.textContent = "Afficher la description";
+                showDescBtn.textContent = "📖";
+                showDescBtn.title = "Afficher/masquer la description";
                 showDescBtn.className = "show-desc-btn";
-                showDescBtn.style.marginLeft = "10px";
-                showDescBtn.style.fontSize = "0.9em";
-                showDescBtn.style.padding = "2px 8px";
-                showDescBtn.style.borderRadius = "6px";
+                // Styles responsive pour le bouton
+                showDescBtn.style.marginLeft = "clamp(8px, 2vw, 10px)";
+                showDescBtn.style.fontSize = "clamp(0.8rem, 2.5vw, 0.9rem)";
+                showDescBtn.style.padding = "clamp(4px, 1vw, 6px) clamp(6px, 2vw, 8px)";
+                showDescBtn.style.borderRadius = "clamp(4px, 1vw, 6px)";
                 showDescBtn.style.border = "none";
                 showDescBtn.style.background = "#eee";
                 showDescBtn.style.cursor = "pointer";
                 showDescBtn.style.transition = "background 0.2s";
                 showDescBtn.style.pointerEvents = "auto";
+                showDescBtn.style.minWidth = "clamp(32px, 8vw, 40px)";
+                showDescBtn.style.minHeight = "clamp(32px, 8vw, 40px)";
+                
                 let descVisible = false;
                 showDescBtn.addEventListener("click", (e) => {
                     e.preventDefault();
@@ -477,19 +532,19 @@ export function createLinkBoxes(profileData) {
                     if (descVisible) {
                         desc.style.maxHeight = "200px";
                         desc.style.opacity = "1";
-                        desc.style.marginTop = "8px";
+                        desc.style.marginTop = "clamp(6px, 2vw, 8px)";
                         desc.style.marginBottom = "0";
-                        desc.style.padding = "8px";
+                        desc.style.padding = "clamp(6px, 2vw, 8px)";
                         arrow.style.opacity = "0";
-                        showDescBtn.textContent = "Masquer la description";
+                        showDescBtn.textContent = "📖✓";
                     } else {
                         desc.style.maxHeight = "0";
                         desc.style.opacity = "0";
                         desc.style.marginTop = "0";
                         desc.style.marginBottom = "0";
-                        desc.style.padding = "0 8px";
+                        desc.style.padding = "0 clamp(6px, 2vw, 8px)";
                         arrow.style.opacity = "1";
-                        showDescBtn.textContent = "Afficher la description";
+                        showDescBtn.textContent = "📖";
                     }
                 });
                 
@@ -500,9 +555,9 @@ export function createLinkBoxes(profileData) {
                 discordLink.addEventListener("mouseenter", () => {
                     desc.style.maxHeight = "200px";
                     desc.style.opacity = "1";
-                    desc.style.marginTop = "8px";
+                    desc.style.marginTop = "clamp(6px, 2vw, 8px)";
                     desc.style.marginBottom = "0";
-                    desc.style.padding = "8px";
+                    desc.style.padding = "clamp(6px, 2vw, 8px)";
                     arrow.style.opacity = "0";
                 });
                 discordLink.addEventListener("mouseleave", () => {
@@ -510,7 +565,7 @@ export function createLinkBoxes(profileData) {
                     desc.style.opacity = "0";
                     desc.style.marginTop = "0";
                     desc.style.marginBottom = "0";
-                    desc.style.padding = "0 8px";
+                    desc.style.padding = "0 clamp(6px, 2vw, 8px)";
                     arrow.style.opacity = "1";
                 });
             }

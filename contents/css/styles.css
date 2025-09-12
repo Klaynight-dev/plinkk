@@ -1257,3 +1257,33 @@ input:checked + .slider:before {
     user-select: none;
     display: block;
 }
+
+/* Additional responsive improvements for better mobile experience */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: clamp(12px, 4vw, 20px);
+        margin: clamp(8px, 2vw, 12px) auto;
+    }
+    
+    .email-description-container {
+        gap: clamp(12px, 4vw, 16px);
+    }
+    
+    .discord-box, .button {
+        min-height: clamp(48px, 12vw, 56px);
+        padding: clamp(8px, 2vw, 12px);
+    }
+    
+    .copy-modal {
+        font-size: clamp(0.7rem, 2vw, 0.9rem) !important;
+        max-width: 85vw !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .copy-modal {
+        font-size: 0.75rem !important;
+        padding: 4px 8px !important;
+        max-width: 80vw !important;
+    }
+}
